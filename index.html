@@ -35,6 +35,20 @@
 			top:-6px !important;
 		}	
 	</style>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			
+			$(document).on('click','#alphabetGroup,#aAction',function(e){
+				e.preventDefault();
+				$.mobile.changePage('alphabets.html',{
+			        allowSamePageTransition: true,
+			        transition: 'none',
+			        reloadPage: true
+			    });
+			});
+
+		});
+	</script>
 </head>
 <body>
 	<div data-role="page" data-theme="a" id="home">
@@ -48,7 +62,7 @@
 			<div class="ui-corner-all custom-corners" id="alphabetGroup">
 			  <div class="ui-bar ui-bar-a">
 			    <h3>Alphabets</h3>
-			    <a href="#" class="ui-btn ui-icon-action ui-btn-icon-notext ui-corner-all ui-btn-right pullUp" data-mini="true">Action</a>
+			    <a id="aAction" href="#" class="ui-btn ui-icon-action ui-btn-icon-notext ui-corner-all ui-btn-right pullUp" data-mini="true">Action</a>
 			  </div>
 			  <div class="ui-body ui-body-a">
 			    <p>Words are grouped by Alphabet</p>

@@ -9,32 +9,42 @@
 	<link rel="stylesheet" href="themes/jquery.mobile.structure-1.4.2.min.css" />
 	<script src="themes/jquery-1.10.2.min.js"></script>
 	<script src="themes/jquery.mobile-1.4.2.min.js"></script>
+	<script src="themes/wl.js"></script>
 	<style>
 		#content{
 			height:100%;
 		}
-		.homeGrp{
-			height:40px;
-			width:98%;
-			margin:10px;
+		#alphabetList>li>a::first-letter {
+			font-size: 200%;
+			color:white;
 		}
-		.custom-corners .ui-bar {
-		  -webkit-border-top-left-radius: inherit;
-		  border-top-left-radius: inherit;
-		  -webkit-border-top-right-radius: inherit;
-		  border-top-right-radius: inherit;
-		}
-		.custom-corners .ui-body {
-		  border-top-width: 0;
-		  -webkit-border-bottom-left-radius: inherit;
-		  border-bottom-left-radius: inherit;
-		  -webkit-border-bottom-right-radius: inherit;
-		  border-bottom-right-radius: inherit;
-		}
-		.pullUp{
-			top:-6px !important;
-		}	
 	</style>
+	<script type="text/javascript">
+		$(document).ready(function(){
+				
+				buildList();
+
+			$(document).on('click','#home',function(e){
+				e.preventDefault();
+				$.mobile.changePage('index.html',{
+			        allowSamePageTransition: true,
+			        transition: 'none',
+			        reloadPage: true
+			    });
+			});
+		});
+
+		function buildList(){
+			var tmp = "";
+			var length = alph.length;
+			console.log(length);
+			for(var i=0;i<length;i++){
+				tmp += '<li><a href="#">'+alph[i].w+'<span class="ui-li-count">'+(alph[i].e-alph[i].s+1)+'</span></a></li>';
+			}
+			$('#alphabetList').append(tmp);
+			$('#alphabetList').listview("refresh");
+		}
+	</script>
 </head>
 <body>
 	<div data-role="page" data-theme="a" id="home">
@@ -44,8 +54,9 @@
 			<a href="#" id="home" data-icon="home" class="ui-btn-left" data-iconpos="notext">home</a>			
 		</div>
 		<div data-role="content" data-theme="a" id="content">
-			
-			
+			<ul data-role="listview" data-count-theme="b" data-inset="true" id="alphabetList">
+
+			</ul>			
 		</div>
 		<div data-role="popup" id="popupBasic" data-overlay-theme="a" class="ui-content" >
 	    	<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
@@ -59,5 +70,29 @@
 				<p>Created By: <a href="http://www.rushis.com">Rushi</a><p>
 		</div>		
 	</div>
+
+	<div data-role="page" data-theme="a" id="home">
+		<div data-role="header"  data-position="fixed">
+			<h1>Alphabets</h1>
+			<a href="#popupBasic" data-position-to="window" data-transition="fade" data-rel="popup" id="infoicon" data-icon="info" class="ui-btn-right" data-iconpos="notext">Info</a>
+			<a href="#" id="home" data-icon="home" class="ui-btn-left" data-iconpos="notext">home</a>			
+		</div>
+		<div data-role="content" data-theme="a" id="content">
+			<ul data-role="listview" data-count-theme="b" data-inset="true" id="alphabetList">
+
+			</ul>			
+		</div>
+		<div data-role="popup" id="popupBasic" data-overlay-theme="a" class="ui-content" >
+	    	<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+				<p>A WordList App, with the following features<p>
+				<ul>
+					<li>Learn by flashcards</li>
+					<li>Browse through Alphabet groups</li>
+					<li>There are 150 group of words each group having 10-11 words and their meaning.</li>
+					<li>Within each group the words are ordered alphabetically. This structure prevents the confusion that results when you try to learn lots of words beginning with the same letter.</li>
+				</ul>
+				<p>Created By: <a href="http://www.rushis.com">Rushi</a><p>
+		</div>		
+	</div>	
 </body>
 </html>
