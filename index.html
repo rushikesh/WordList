@@ -43,12 +43,16 @@
 			background-color: #736357;
 			margin: 0;
 		}
+		#alphabetHomeLeft{
+			height:100%;
+		}
 		.card{
 			/* position: absolute; */
 			width: 100% !important;
 			border: 1px solid;
 			margin: auto;
 			background-color: #c7b299;
+			height:100%;
 		}
 		.wrd{
 			position: relative;
@@ -103,10 +107,15 @@
 				displayWord();
 			});
 
-			$('#alphabetHomeLeftContent').on('swipefright',function(){
+			
+			$('#alphabetHomeLeftContent').on('swiperight',function(){
 				ptr--;
 				displayWord();
-			});			
+			});
+
+			$(document).delegate("#alphabetHomeLeft", "pageshow", function() {
+				//calAndSetContainerLength("alphabetHomeLeftContent>.card",".card");
+			});
 
 		});
 
@@ -133,7 +142,6 @@
 				}
 			}
 			$.mobile.navigate("#alphabetHomeLeft",{transition:"slide" });
-			calAndSetContainerLength("alphabetHomeLeftContent>.card",".card");
 			displayWord();
 		}
 
@@ -224,11 +232,11 @@
 	<!--End: Alphabet Page which shows List of Alphabet and bubbles-->
 	<!--Start: Alphabet Page which shows when Swiped Left-->
 	<div data-role="page" data-theme="a" id="alphabetHomeLeft">
-		<div data-role="header"  data-position="fixed">
+		<div data-role="header"  data-position="fixed" data-fullscreen="false">
 			<h1>Alphabet</h1>
 			<a href="#home" id="home" data-icon="home" class="ui-btn-left" data-iconpos="notext">home</a>			
 		</div>
-		<div data-role="content" data-theme="a" id="alphabetHomeLeftContent">
+		<div data-role="content" data-theme="a" id="alphabetHomeLeftContent" style="height:86%;overflow:hidden">
 			<div class="card ui-corner-all custom-corners"></div>
 		</div>
 	</div>
