@@ -39,13 +39,13 @@
 			font-size: 200%;
 			color:white;
 		}
-		#home,#alphabetHomeLeft,#alphabetHomeRight{
+		#home,#alphabetHomeLeft,#groupHome{
 			background-color: #736357;
 			margin: 0;
 		}
-		#alphabetHomeLeft{
+		#alphabetHomeLeft,#groupHome{
 			height:90%;
-			overflow-y:hidden;
+			/* overflow-y:hidden; */
 		}
 		.card{
 			/* position: absolute; */
@@ -84,9 +84,14 @@
 			font-size: 70% !important;
 			line-height: 1.5;
 		}
-		#alphabetHomeLeftContent,#alphabetHomeRightContent{
-			/* margin:2px; */
+		.meaning{
+			position:relative;
+			left:30px;
+			width:95%;
+			word-wrap:break-word;
+			white-space: normal;
 		}
+
 	</style>
 	<script type="text/javascript">
 		var aStart = 0, aEnd = 0, ptr=0;
@@ -98,6 +103,18 @@
 
 			$('.indAlph').on('click',function(){
 				alphabetScreen($(this).attr('id'));
+			});
+
+			$('#grp').on('click',function(){
+				displayGroup(g1);
+				var len = allGroups.length;
+				var s = '<select name="selectedGrp" id="selectedGrp" data-mini="true">'
+				for(var i=0;i<len;i++){
+					s += '<option value="'+allGroups[i]+'">Group '+(i+1)+'</option>';
+				}
+				s += '</select>';
+				$('#grpSelect').append(s);
+				$.mobile.navigate("#groupHome",{transition:"slide" });
 			});
 
 			$('.card').on('click',function(){
@@ -123,7 +140,11 @@
 			$('#aright').on('click',function(){
 				ptr--;
 				displayWord();
-			});		
+			});
+
+			$(document).on('change','#selectedGrp',function(){
+				displayGroup($(this).val().split(','));
+			});				
 			
 
 			$(document).delegate("#alphabetHomeLeft", "pageshow", function() {
@@ -131,6 +152,17 @@
 			});
 
 		});
+
+		function displayGroup(g){
+			var len = g.length;
+			var s = "";
+			for(var i=0;i<len;i++){
+				s += '<li><b>'+wl[g[i]].w+'</b><div class="meaning">'+wl[g[i]].m+'</div></li>'
+			}
+			$('#groupList').html('');
+			$('#groupList').append(s);
+			$('#groupList:visible').listview("refresh");
+		}
 
 		function calAndSetContainerLength(id,c){
 			var deviceScreen = $.mobile.getScreenHeight();
@@ -202,18 +234,20 @@
 			<br/>
 			<div class="ui-corner-all custom-corners" id="flashCard">
 			  <div class="ui-bar ui-bar-a">
-			    <h3>FlashCards</h3>
+			    <h3>Favorites</h3>
 			    <a href="#" class="ui-btn ui-icon-action ui-btn-icon-notext ui-corner-all ui-btn-right pullUp" data-mini="true">Action</a>
 			  </div>
 			  <div class="ui-body ui-body-a">
-			    <p>Test your vocabulary by using the flashcards</p>
+			    <p>Your Favorite Words In one Place</p>
+			    <a href="#" id="staroff" data-mini="true" class="ui-btn ui-btn-a ui-icon-star ui-btn-icon-notext ui-corner-all">Favorite</a>
+			    <a href="#" id="staron" data-mini="true" class="ui-btn ui-btn-e ui-icon-star ui-btn-icon-notext ui-corner-all">Favorite</a>
 			  </div>
 			</div>
 			<br/>
 			<div class="ui-corner-all custom-corners" id="wordGroup">
 			  <div class="ui-bar ui-bar-a">
 			    <h3>Grouped Words</h3>
-			    <a href="#" class="ui-btn ui-icon-action ui-btn-icon-notext ui-corner-all ui-btn-right pullUp" data-mini="true">Action</a>
+			    <a id="grp" href="#groupHome" class="ui-btn ui-icon-action ui-btn-icon-notext ui-corner-all ui-btn-right pullUp" data-mini="true">Action</a>
 			  </div>
 			  <div class="ui-body ui-body-a">
 			    <p>Learn quickly and efficiently with carefully grouped words. Within each group the words are ordered alphabetically. This structure prevents the confusion that results when you try to learn lots of words beginning with the same letter.</p>
@@ -243,7 +277,7 @@
 		</div>		
 	</div>
 	<!--End: Alphabet Page which shows List of Alphabet and bubbles-->
-	<!--Start: Alphabet Page which shows when Swiped Left-->
+	<!--Start: Alphabet Page which shows each word-->
 	<div data-role="page" data-theme="a" id="alphabetHomeLeft">
 		<div data-role="header" data-position="fixed">
 			<h1>Alphabet</h1>
@@ -255,17 +289,19 @@
 			<div class="card ui-corner-all custom-corners"></div>
 		</div>
 	</div>
-	<!--End: Alphabet Page which shows when Swiped Left-->
-	<!--Start: Alphabet Page which shows when Swiped Right-->
-	<div data-role="page" data-theme="a" id="alphabetHomeRight">
-		<div data-role="header"  data-position="fixed">
-			<h1>Alphabet</h1>
-			<a href="#home" id="home" data-icon="home" class="ui-btn-left" data-iconpos="notext">home</a>			
+	<!--End: Alphabet Page which shows each word-->
+	<!--Start: Group Page which shows word group-->
+	<div data-role="page" data-theme="a" id="groupHome">
+		<div data-role="header" data-position="fixed">
+			<a href="#home" id="grpHome" data-icon="home" class="ui-btn-left" data-iconpos="notext">home</a>
+			<div id="grpSelect" style="position:relative;left:42%"></div>
 		</div>
-		<div data-role="content" data-theme="a" id="alphabetHomeRightContent">
-			<div class="card ui-corner-all custom-corners"></div>
+		<div data-role="content" data-theme="a" id="groupHomeContent">
+				<ol data-role="listview" id="groupList">
+
+				</ol>
 		</div>
 	</div>
-	<!--End: Alphabet Page which shows when Swiped Right-->	
+	<!--End:  Group Page which shows word group-->
 </body>
 </html>
