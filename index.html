@@ -39,19 +39,114 @@
 			font-size: 200%;
 			color:white;
 		}
+		#home,#alphabetHomeLeft,#alphabetHomeRight{
+			background-color: #736357;
+			margin: 0;
+		}
+		.card{
+			/* position: absolute; */
+			width: 100% !important;
+			border: 1px solid;
+			margin: auto;
+			background-color: #c7b299;
+		}
+		.wrd{
+			position: relative;
+			margin: auto;
+			width:100%;
+			margin: 0;
+			text-align: center;
+			vertical-align: middle;
+			top:45%;
+			line-height: 50%;
+			color: black;
+			font-size: 200%;			
+		}
+		.ansRev{
+			-webkit-transform:rotate(-180deg);
+			-moz-transform:rotate(-180deg); 
+			-o-transform:rotate(-180deg); 
+			transform:rotate(-180deg);
+			ms-filter:"progid:DXImageTransform.Microsoft.BasicImage(rotation=2)";
+			filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+			font-size: 70% !important;
+			position: relative;
+			top:30px;
+		}
+		.ans{
+			position: relative;
+			top:30px;
+			font-size: 70% !important;
+		}
+		#alphabetHomeLeftContent,#alphabetHomeRightContent{
+			margin:10px;
+		}
 	</style>
 	<script type="text/javascript">
+		var aStart = 0, aEnd = 0, ptr=0;
 		$(document).ready(function(){
+
 			populateInfoPopup();
+			
 			buildList();
+
+			$('.indAlph').on('click',function(){
+				alphabetScreen($(this).attr('id'));
+			});
+
+			$('.card').on('click',function(){
+				$('.ansRev').toggleClass("ans ansRev");
+			});
+
+			$('#alphabetHomeLeftContent').on('swipeleft',function(){
+				ptr++;
+				displayWord();
+			});
+
+			$('#alphabetHomeLeftContent').on('swipefright',function(){
+				ptr--;
+				displayWord();
+			});			
+
 		});
+
+		function calAndSetContainerLength(id,c){
+			var deviceScreen = $.mobile.getScreenHeight();
+		    var header = $(".ui-header").hasClass("ui-header-fixed") ? $(".ui-header").outerHeight() - 1 : $(".ui-header").outerHeight();
+		    var footer = $(".ui-footer").hasClass("ui-footer-fixed") ? $(".ui-footer").outerHeight() - 1 : $(".ui-footer").outerHeight();
+		    var contentCurrent = $(".ui-content").outerHeight() - $(".ui-content").height();
+		    var content = deviceScreen - header - footer - contentCurrent;
+			$("#"+id).height(content);
+			$(c).css("line-height",(content-100)+"px");
+			console.log(id);
+			console.log(content);
+		}
+
+		function alphabetScreen(str){
+			var len = alph.length;
+			for(var i=0;i<len;i++){
+				if(alph[i]["a"] == str){
+					aStart = alph[i].s;
+					aEnd = alph[i].e;
+					ptr = aStart;
+					break;
+				}
+			}
+			$.mobile.navigate("#alphabetHomeLeft",{transition:"slide" });
+			calAndSetContainerLength("alphabetHomeLeftContent>.card",".card");
+			displayWord();
+		}
+
+		function displayWord(){
+			var tmp = '<div class="wrd">'+wl[ptr].w + '<div class="ansRev">' + wl[ptr].m + '</div></div>';
+			$('#alphabetHomeLeftContent>.card').html(tmp);			
+		}
 
 		function buildList(){
 			var tmp = "";
 			var length = alph.length;
-			console.log(length);
 			for(var i=0;i<length;i++){
-				tmp += '<li><a href="#">'+alph[i].w+'<span class="ui-li-count">'+(alph[i].e-alph[i].s+1)+'</span></a></li>';
+				tmp += '<li><a href="#" class="indAlph" id="'+alph[i].a+'">'+alph[i].w+'<span class="ui-li-count">'+(alph[i].e-alph[i].s+1)+'</span></a></li>';
 			}
 			$('#alphabetList').append(tmp);
 			//$('#alphabetList').listview("refresh");
@@ -65,6 +160,7 @@
 	</script>
 </head>
 <body>
+	<!--Start: Main Home Page of the Application-->
 	<div data-role="page" data-theme="a" id="home">
 		<div data-role="header"  data-position="fixed">
 			<h1>WordList</h1>
@@ -108,7 +204,8 @@
 
 		</div>		
 	</div>
-
+	<!--End: Main Home Page of the Application-->
+	<!--Start: Alphabet Page which shows List of Alphabet and bubbles-->
 	<div data-role="page" data-theme="a" id="alphabetHome">
 		<div data-role="header"  data-position="fixed">
 			<h1>Alphabets</h1>
@@ -124,6 +221,28 @@
 	    	
 		</div>		
 	</div>
-
+	<!--End: Alphabet Page which shows List of Alphabet and bubbles-->
+	<!--Start: Alphabet Page which shows when Swiped Left-->
+	<div data-role="page" data-theme="a" id="alphabetHomeLeft">
+		<div data-role="header"  data-position="fixed">
+			<h1>Alphabet</h1>
+			<a href="#home" id="home" data-icon="home" class="ui-btn-left" data-iconpos="notext">home</a>			
+		</div>
+		<div data-role="content" data-theme="a" id="alphabetHomeLeftContent">
+			<div class="card ui-corner-all custom-corners"></div>
+		</div>
+	</div>
+	<!--End: Alphabet Page which shows when Swiped Left-->
+	<!--Start: Alphabet Page which shows when Swiped Right-->
+	<div data-role="page" data-theme="a" id="alphabetHomeRight">
+		<div data-role="header"  data-position="fixed">
+			<h1>Alphabet</h1>
+			<a href="#home" id="home" data-icon="home" class="ui-btn-left" data-iconpos="notext">home</a>			
+		</div>
+		<div data-role="content" data-theme="a" id="alphabetHomeRightContent">
+			<div class="card ui-corner-all custom-corners"></div>
+		</div>
+	</div>
+	<!--End: Alphabet Page which shows when Swiped Right-->	
 </body>
 </html>
