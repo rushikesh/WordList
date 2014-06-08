@@ -39,7 +39,7 @@
 			font-size: 200%;
 			color:white;
 		}
-		#home,#alphabetHomeLeft,#groupHome{
+		#home,#alphabetHomeLeft,#groupHome,#favHome{
 			background-color: #736357;
 			margin: 0;
 		}
@@ -91,7 +91,14 @@
 			word-wrap:break-word;
 			white-space: normal;
 		}
-
+		.ui-icon-star-off{ 
+		    background: url(themes/images/star_off.png) 50% 50% no-repeat; background-size: 18px 18px;
+		    background-color: transparent !important;    
+		}
+		.ui-icon-star-on{ 
+		    background: url(themes/images/star_on.png) 50% 50% no-repeat; background-size: 18px 18px;
+		    background-color: transparent !important;  
+		} 
 	</style>
 	<script type="text/javascript">
 		var aStart = 0, aEnd = 0, ptr=0;
@@ -101,20 +108,34 @@
 			
 			buildList();
 
+			favorites();
+
 			$('.indAlph').on('click',function(){
 				alphabetScreen($(this).attr('id'));
 			});
 
 			$('#grp').on('click',function(){
-				displayGroup(g1);
-				var len = allGroups.length;
-				var s = '<select name="selectedGrp" id="selectedGrp" data-mini="true">'
-				for(var i=0;i<len;i++){
-					s += '<option value="'+allGroups[i]+'">Group '+(i+1)+'</option>';
+				
+				if(!($('#selectedGrp').length)){
+					var len = allGroups.length;
+					var s = '<select name="selectedGrp" id="selectedGrp" data-mini="true">'
+					for(var i=0;i<len;i++){
+						s += '<option value="'+allGroups[i]+'">Group '+(i+1)+'</option>';
+					}
+					s += '</select>';
+					$('#grpSelect').append(s);
 				}
-				s += '</select>';
-				$('#grpSelect').append(s);
+				displayGroup(g1,"groupList");
 				$.mobile.navigate("#groupHome",{transition:"slide" });
+			});
+
+			$('#fav').on('click',function(){
+				var favList = window.localStorage.getItem("favs");
+				if(!favList){
+					favList = "";
+				}
+				displayGroup(favList.split(','),"favList");
+				$.mobile.navigate("#favHome",{transition:"slide" });
 			});
 
 			$('.card').on('click',function(){
@@ -133,19 +154,48 @@
 			});
 
 			$('#aleft').on('click',function(){
-				ptr++;
+				ptr--;
+				if(ptr<0){
+					ptr = wl.length-1;
+				}
 				displayWord();
 			});
 
 			$('#aright').on('click',function(){
-				ptr--;
+				ptr++;
+				if(ptr==wl.length){
+					ptr = 0;
+				}
 				displayWord();
 			});
 
 			$(document).on('change','#selectedGrp',function(){
-				displayGroup($(this).val().split(','));
+				displayGroup($(this).val().split(','),"groupList");
 			});				
 			
+			$('#afav').on('click',function(){
+				if($(this).hasClass("ui-icon-star-off")){
+					$('#afav').removeClass("ui-icon-star-off");
+					$('#afav').addClass("ui-icon-star-on");
+					setFavorite(ptr);
+				}else{
+					$('#afav').removeClass("ui-icon-star-on");
+					$('#afav').addClass("ui-icon-star-off");
+					removeFavorite(ptr);
+				}
+			});			
+
+			$(document).on('click','.gFav',function(){
+				if($(this).hasClass("ui-icon-star-off")){
+					$(this).removeClass("ui-icon-star-off");
+					$(this).addClass("ui-icon-star-on");
+					setFavorite($(this).attr('aid'));
+				}else{
+					$(this).removeClass("ui-icon-star-on");
+					$(this).addClass("ui-icon-star-off");
+					removeFavorite($(this).attr('aid'));
+				}
+			});
 
 			$(document).delegate("#alphabetHomeLeft", "pageshow", function() {
 				//calAndSetContainerLength("alphabetHomeLeftContent>.card",".card");
@@ -153,15 +203,72 @@
 
 		});
 
-		function displayGroup(g){
+		function favorites(){
+			var favs = window.localStorage.getItem("favs");
+			if(favs==null){
+				window.localStorage.setItem("favs","");					
+			}
+		}
+
+		function setFavorite(aid){
+			var favs = window.localStorage.getItem("favs");
+			if(favs==""){
+				favs += aid;
+			}else{
+				favs += ","+aid;
+			}
+			window.localStorage.setItem("favs",favs);
+		}
+
+		function removeFavorite(aid){
+			var favs = window.localStorage.getItem("favs");
+			var found = false;
+			if(favs!=""){
+				var tmp = favs.split(',');
+				var len = tmp.length;
+				for(var i=0;i<len;i++){
+					if(tmp[i]==aid){
+						tmp.splice(i, 1);
+						window.localStorage.setItem("favs",tmp.toString());
+						break;
+					}
+				}
+			}
+		}		
+
+		function isFavorite(aid){
+			var favs = window.localStorage.getItem("favs");
+			var isFav = false;
+			if(favs!=""){
+				var tmp = favs.split(',');
+				var len = tmp.length;
+				for(var i=0;i<len;i++){
+					if(tmp[i]==aid){
+						isFav = true;
+						break;
+					}
+				}
+			}
+			return isFav;
+		}
+
+		function displayGroup(g,id){
 			var len = g.length;
 			var s = "";
 			for(var i=0;i<len;i++){
-				s += '<li><b>'+wl[g[i]].w+'</b><div class="meaning">'+wl[g[i]].m+'</div></li>'
+				var isFav = isFavorite(g[i]);
+				var putStar = 'ui-icon-star-off" aid="'+g[i]+'"';
+				if(isFav){
+					var putStar = 'ui-icon-star-on" aid="'+g[i]+'"';
+				}
+				s += '<li><b>'+wl[g[i]].w+'</b><span data-mini="true" data-iconshadow="false" class="gFav ui-btn ui-btn-icon-notext ui-corner-all ui-btn-right '+putStar+'>Favorite</span><div class="meaning">'+wl[g[i]].m+'</div></li>'
 			}
-			$('#groupList').html('');
-			$('#groupList').append(s);
-			$('#groupList:visible').listview("refresh");
+			$('#'+id).html('');
+			$('#'+id).append(s);
+			if($('#'+id).length){
+				$('#'+id).listview("refresh");
+			}
+			//$('#groupList:visible').listview("refresh");
 		}
 
 		function calAndSetContainerLength(id,c){
@@ -172,8 +279,6 @@
 		    var content = deviceScreen - header - footer - contentCurrent;
 			$("#"+id).height(content);
 			$(c).css("line-height",(content-100)+"px");
-			console.log(id);
-			console.log(content);
 		}
 
 		function alphabetScreen(str){
@@ -191,6 +296,14 @@
 		}
 
 		function displayWord(){
+			var isFav = isFavorite(ptr);
+			if(isFav){
+				$('#afav').removeClass("ui-icon-star-off");
+				$('#afav').addClass("ui-icon-star-on");
+			}else{
+				$('#afav').removeClass("ui-icon-star-on");
+				$('#afav').addClass("ui-icon-star-off");				
+			}
 			var tmp = '<div class="wrd">'+wl[ptr].w + '<div class="ansRev">' + wl[ptr].m + '</div></div>';
 			$('.card').html(tmp);			
 		}
@@ -235,12 +348,12 @@
 			<div class="ui-corner-all custom-corners" id="flashCard">
 			  <div class="ui-bar ui-bar-a">
 			    <h3>Favorites</h3>
-			    <a href="#" class="ui-btn ui-icon-action ui-btn-icon-notext ui-corner-all ui-btn-right pullUp" data-mini="true">Action</a>
+			    <a href="#favHome" id="fav" class="ui-btn ui-icon-action ui-btn-icon-notext ui-corner-all ui-btn-right pullUp" data-mini="true">Action</a>
 			  </div>
 			  <div class="ui-body ui-body-a">
 			    <p>Your Favorite Words In one Place</p>
-			    <a href="#" id="staroff" data-mini="true" class="ui-btn ui-btn-a ui-icon-star ui-btn-icon-notext ui-corner-all">Favorite</a>
-			    <a href="#" id="staron" data-mini="true" class="ui-btn ui-btn-e ui-icon-star ui-btn-icon-notext ui-corner-all">Favorite</a>
+<!-- 			    <a href="#" id="fav" data-mini="true" data-iconshadow="false" class="ui-btn ui-icon-star-on ui-btn-icon-notext ui-corner-all">Favorite</a>
+<a href="#" id="staron" data-mini="true" data-iconshadow="false" class="ui-btn ui-icon-star-off ui-btn-icon-notext ui-corner-all">Favorite</a> -->
 			  </div>
 			</div>
 			<br/>
@@ -263,7 +376,7 @@
 	<!--Start: Alphabet Page which shows List of Alphabet and bubbles-->
 	<div data-role="page" data-theme="a" id="alphabetHome">
 		<div data-role="header"  data-position="fixed">
-			<h1>Alphabets</h1>
+			<h1>Alphabet</h1>
 			<a href="#popupBasica" data-position-to="window" data-transition="fade" data-rel="popup" id="infoicon" data-icon="info" class="ui-btn-right" data-iconpos="notext">Info</a>
 			<a href="#home" id="home" data-icon="home" class="ui-btn-left" data-iconpos="notext">home</a>			
 		</div>
@@ -281,15 +394,29 @@
 	<div data-role="page" data-theme="a" id="alphabetHomeLeft">
 		<div data-role="header" data-position="fixed">
 			<h1>Alphabet</h1>
-			<a href="#home" id="home" data-icon="home" class="ui-btn-left" data-iconpos="notext">home</a>			
+			<a href="#home" id="home" data-icon="home" class="ui-btn-left" data-iconpos="notext">home</a>
+			<a href="#" id="afav" data-mini="true" data-iconshadow="false" class="ui-btn ui-icon-star-off ui-btn-icon-notext ui-corner-all ui-btn-right">Favorite</a>		
 		</div>
 		<div data-role="content" data-theme="a" id="alphabetHomeLeftContent" style="height:95%;overflow:hidden">
-			<a href="#" id="aleft" data-role="button" data-icon="arrow-l" class="ui-btn-left" data-iconpos="notext" style="top:45%;z-index:2;left:18px;">home</a>	
-			<a href="#" id="aright" data-role="button" data-icon="arrow-r" class="ui-btn-right" data-iconpos="notext" style="top:45%;z-index:2;right:15px;">home</a>	
+			<a href="#" id="aleft" data-role="button" data-icon="arrow-l" class="ui-btn-left" data-iconpos="notext" style="top:45%;z-index:2;left:18px;">Left</a>	
+			<a href="#" id="aright" data-role="button" data-icon="arrow-r" class="ui-btn-right" data-iconpos="notext" style="top:45%;z-index:2;right:15px;">Right</a>	
 			<div class="card ui-corner-all custom-corners"></div>
 		</div>
 	</div>
 	<!--End: Alphabet Page which shows each word-->
+	<!--Start: Fav Page which shows Favorite Words-->
+	<div data-role="page" data-theme="a" id="favHome">
+		<div data-role="header" data-position="fixed">
+			<h1>Favorites</h1>
+			<a href="#home" id="aFavHome" data-icon="home" class="ui-btn-left" data-iconpos="notext">home</a>
+		</div>
+		<div data-role="content" data-theme="a" id="favHomeContent">
+				<ol data-role="listview" id="favList">
+
+				</ol>
+		</div>
+	</div>
+	<!--End:  Fav Page which shows Favorite Words-->	
 	<!--Start: Group Page which shows word group-->
 	<div data-role="page" data-theme="a" id="groupHome">
 		<div data-role="header" data-position="fixed">
