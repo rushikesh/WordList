@@ -169,10 +169,6 @@
 				}
 			});
 
-			
-			
-
-
 
 			$('#aleft').on('click',function(){
 				ptr--;
@@ -276,6 +272,7 @@
 		function displayGroup(g,id){
 			var len = g.length;
 			var s = "";
+			$('#'+id).html('');
 			for(var i=0;i<len;i++){
 				var isFav = isFavorite(g[i]);
 				var putStar = 'ui-icon-star-off" aid="'+g[i]+'"';
@@ -284,7 +281,6 @@
 				}
 				s += '<li><b>'+wl[g[i]].w+'</b><span data-mini="true" data-iconshadow="false" class="gFav ui-btn ui-btn-icon-notext ui-corner-all ui-btn-right '+putStar+'>Favorite</span><div class="meaning">'+wl[g[i]].m+'</div></li>'
 			}
-			$('#'+id).html('');
 			$('#'+id).append(s);
 			if($('#'+id).length){
 				$('#'+id).listview("refresh");
@@ -341,7 +337,7 @@
 
 		function populateInfoPopup(){
 
-			$('.popupBasic').html('<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a><p>A WordList App, with the following features<p><ul><li>Learn by flashcards</li><li>Browse through Alphabet groups</li><li>There are 150 group of words each group having 10 words and their meaning.</li><li>Within each group the words are ordered alphabetically. This structure prevents the confusion that results when you try to learn lots of words beginning with the same letter.</li></ul><p>Created By: <a href="http://www.rushis.com">Rushi</a><p>');
+			$('.popupBasic').html('<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right"></a><p>A WordList App, with the following features<p><ul><li>Learn by flashcards</li><li>Browse through Alphabet groups</li><li>See your favorite words in one place for quick reference.</li><li>There are 150 group of words each group having 10 words and their meaning.</li><li>Within each group the words are ordered alphabetically. This structure prevents the confusion that results when you try to learn lots of words beginning with the same letter.</li></ul><p>Created By: <a href="http://www.rushis.com">Rushi</a><p>');
 		}
 
 	</script>
@@ -351,14 +347,17 @@
 	<div data-role="page" data-theme="a" id="home">
 		<div data-role="header"  data-position="fixed">
 			<h1>WordList</h1>
-			<a href="#popupBasich" data-position-to="window" data-transition="fade" data-rel="popup" id="infoicon" data-icon="info" class="ui-btn-right" data-iconpos="notext">Info</a>
-			<a href="#" id="home" data-icon="home" class="ui-btn-left" data-iconpos="notext">home</a>			
+			<a href="#" id="home" data-icon="home" class="ui-btn-left" data-iconpos="notext">home</a>
+			<a href="#popupBasich" data-position-to="window" data-transition="fade" data-rel="popup" id="infoicon" data-icon="info" class="ui-btn-right" data-iconpos="notext">Info</a>					
 		</div>
+		<div data-role="popup" id="popupBasich" data-overlay-theme="a" class="ui-content" >
+	    	<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right"></a><p>A WordList App, with the following features<p><ul><li>Learn by flashcards</li><li>Browse through Alphabet groups</li><li>See your favorite words in one place for quick reference.</li><li>There are 150 group of words each group having 10 words and their meaning.</li><li>Within each group the words are ordered alphabetically. This structure prevents the confusion that results when you try to learn lots of words beginning with the same letter.</li></ul><p>Created By: <a href="http://www.rushis.com">Rushi</a><p>
+		</div>	
 		<div data-role="content" data-theme="a" id="content">
 			
 			<div class="ui-corner-all custom-corners" id="alphabetGroup">
 			  <div class="ui-bar ui-bar-a">
-			    <h3>Alphabets</h3>
+			    <h3>A to Z</h3>
 			    <a id="aAction" href="#alphabetHome" class="ui-btn ui-icon-action ui-btn-icon-notext ui-corner-all ui-btn-right pullUp" data-mini="true">Action</a>
 			  </div>
 			  <div class="ui-body ui-body-a">
@@ -408,7 +407,7 @@
 		</div>
 		<div data-role="popup" id="popupBasica" data-overlay-theme="a" class="ui-content popupBasic" >
 	    	
-		</div>		
+		</div>			
 	</div>
 	<!--End: Alphabet Page which shows List of Alphabet and bubbles-->
 	<!--Start: Alphabet Page which shows each word-->
@@ -447,12 +446,16 @@
 		<div data-role="header" data-position="fixed">
 			<a href="#home" id="grpHome" data-icon="home" class="ui-btn-left" data-iconpos="notext">home</a>
 			<div id="grpSelect" style="position:relative;left:42%"></div>
+			<a href="#popupBasicg" data-position-to="window" data-transition="fade" data-rel="popup" id="infoicong" data-icon="info" class="ui-btn-right" data-iconpos="notext">Info</a>
 		</div>
 		<div data-role="content" data-theme="a" id="groupHomeContent">
 				<ol data-role="listview" id="groupList">
 
 				</ol>
 		</div>
+		<div data-role="popup" id="popupBasicg" data-overlay-theme="a" class="ui-content popupBasic" >
+	    	
+		</div>	
 	</div>
 	<!--End:  Group Page which shows word group-->
 </body>
