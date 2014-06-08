@@ -147,11 +147,32 @@
 				displayWord();
 			});
 
-			
 			$('#alphabetHomeLeftContent').on('swiperight',function(){
 				ptr--;
 				displayWord();
 			});
+			
+			$('#groupHomeContent').on('swiperight',function(){
+				var val = $('#selectedGrp option:selected').prev().val();
+				if(val){
+					$('#selectedGrp').val(''+val);
+					$('#selectedGrp').change();
+				}
+				
+			});
+
+			$('#groupHomeContent').on('swipeleft',function(){
+				var val = $('#selectedGrp option:selected').next().val();
+				if(val){
+					$('#selectedGrp').val(''+val);
+					$('#selectedGrp').change();
+				}
+			});
+
+			
+			
+
+
 
 			$('#aleft').on('click',function(){
 				ptr--;
@@ -320,7 +341,7 @@
 
 		function populateInfoPopup(){
 
-			$('.popupBasic').html('<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a><p>A WordList App, with the following features<p><ul><li>Learn by flashcards</li><li>Browse through Alphabet groups</li><li>There are 150 group of words each group having 10-11 words and their meaning.</li><li>Within each group the words are ordered alphabetically. This structure prevents the confusion that results when you try to learn lots of words beginning with the same letter.</li></ul><p>Created By: <a href="http://www.rushis.com">Rushi</a><p>');
+			$('.popupBasic').html('<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a><p>A WordList App, with the following features<p><ul><li>Learn by flashcards</li><li>Browse through Alphabet groups</li><li>There are 150 group of words each group having 10 words and their meaning.</li><li>Within each group the words are ordered alphabetically. This structure prevents the confusion that results when you try to learn lots of words beginning with the same letter.</li></ul><p>Created By: <a href="http://www.rushis.com">Rushi</a><p>');
 		}
 
 	</script>
@@ -330,7 +351,7 @@
 	<div data-role="page" data-theme="a" id="home">
 		<div data-role="header"  data-position="fixed">
 			<h1>WordList</h1>
-			<a href="#popupBasic" data-position-to="window" data-transition="fade" data-rel="popup" id="infoicon" data-icon="info" class="ui-btn-right" data-iconpos="notext">Info</a>
+			<a href="#popupBasich" data-position-to="window" data-transition="fade" data-rel="popup" id="infoicon" data-icon="info" class="ui-btn-right" data-iconpos="notext">Info</a>
 			<a href="#" id="home" data-icon="home" class="ui-btn-left" data-iconpos="notext">home</a>			
 		</div>
 		<div data-role="content" data-theme="a" id="content">
@@ -368,8 +389,8 @@
 			</div>
 
 		</div>
-		<div data-role="popup" id="popupBasic" data-overlay-theme="a" class="ui-content popupBasic" >
-
+		<div data-role="popup" id="popupBasich" data-overlay-theme="a" class="ui-content popupBasic" >
+	    	
 		</div>		
 	</div>
 	<!--End: Main Home Page of the Application-->
@@ -409,12 +430,16 @@
 		<div data-role="header" data-position="fixed">
 			<h1>Favorites</h1>
 			<a href="#home" id="aFavHome" data-icon="home" class="ui-btn-left" data-iconpos="notext">home</a>
+			<a href="#popupBasicf" data-position-to="window" data-transition="fade" data-rel="popup" id="infoicon" data-icon="info" class="ui-btn-right" data-iconpos="notext">Info</a>
 		</div>
 		<div data-role="content" data-theme="a" id="favHomeContent">
 				<ol data-role="listview" id="favList">
 
 				</ol>
 		</div>
+		<div data-role="popup" id="popupBasicf" data-overlay-theme="a" class="ui-content popupBasic" >
+	    	
+		</div>			
 	</div>
 	<!--End:  Fav Page which shows Favorite Words-->	
 	<!--Start: Group Page which shows word group-->
