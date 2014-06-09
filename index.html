@@ -45,7 +45,6 @@
 		}
 		#alphabetHomeLeft,#groupHome{
 			height:90%;
-			/* overflow-y:hidden; */
 		}
 		.card{
 			/* position: absolute; */
@@ -65,7 +64,7 @@
 			top:45%;
 			line-height: 50%;
 			color: black;
-			font-size: 200%;			
+			font-size: 2em;			
 		}
 		.ansRev{
 			-webkit-transform:rotate(-180deg);
@@ -74,14 +73,15 @@
 			transform:rotate(-180deg);
 			ms-filter:"progid:DXImageTransform.Microsoft.BasicImage(rotation=2)";
 			filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
-			font-size: 70% !important;
+			font-size: .7em !important;
 			position: relative;
+			color:#C7B299;
 			top:30px;
 		}
 		.ans{
 			position: relative;
 			top:30px;
-			font-size: 70% !important;
+			font-size: .7em !important;
 			line-height: 1.5;
 		}
 		.meaning{
@@ -126,7 +126,7 @@
 					$('#grpSelect').append(s);
 				}
 				displayGroup(g1,"groupList");
-				$.mobile.navigate("#groupHome",{transition:"slide" });
+				$.mobile.navigate("#groupHome",{transition:"slide",info:"navigate to group home"});
 			});
 
 			$('#fav').on('click',function(){
@@ -135,7 +135,7 @@
 					favList = "";
 				}
 				displayGroup(favList.split(','),"favList");
-				$.mobile.navigate("#favHome",{transition:"slide" });
+				$.mobile.navigate("#favHome",{transition:"slide",info:"navigate to fav home"});
 			});
 
 			$('.card').on('click',function(){
@@ -214,9 +214,6 @@
 				}
 			});
 
-			$(document).delegate("#alphabetHomeLeft", "pageshow", function() {
-				//calAndSetContainerLength("alphabetHomeLeftContent>.card",".card");
-			});
 
 		});
 
@@ -308,7 +305,7 @@
 					break;
 				}
 			}
-			$.mobile.navigate("#alphabetHomeLeft",{transition:"slide" });
+			$.mobile.navigate("#alphabetHomeLeft",{transition:"slide",info:"navigate to alphabetHomeLeft"});
 			displayWord();
 		}
 
@@ -347,8 +344,8 @@
 	<div data-role="page" data-theme="a" id="home">
 		<div data-role="header"  data-position="fixed">
 			<h1>WordList</h1>
-			<a href="#" id="home" data-icon="home" class="ui-btn-left" data-iconpos="notext">home</a>
-			<a href="#popupBasich" data-position-to="window" data-transition="fade" data-rel="popup" id="infoicon" data-icon="info" class="ui-btn-right" data-iconpos="notext">Info</a>					
+			<a href="#" id="home" data-transition="slide" data-icon="home" class="ui-btn-left" data-iconpos="notext">home</a>
+			<a href="#popupBasich" data-position-to="window" data-transition="slide" data-rel="popup" id="infoicon" data-icon="info" class="ui-btn-right" data-iconpos="notext">Info</a>					
 		</div>
 		<div data-role="popup" id="popupBasich" data-overlay-theme="a" class="ui-content" >
 	    	<a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right"></a><p>A WordList App, with the following features<p><ul><li>Learn by flashcards</li><li>Browse through Alphabet groups</li><li>See your favorite words in one place for quick reference.</li><li>There are 150 group of words each group having 10 words and their meaning.</li><li>Within each group the words are ordered alphabetically. This structure prevents the confusion that results when you try to learn lots of words beginning with the same letter.</li></ul><p>Created By: <a href="http://www.rushis.com">Rushi</a><p>
@@ -397,8 +394,8 @@
 	<div data-role="page" data-theme="a" id="alphabetHome">
 		<div data-role="header"  data-position="fixed">
 			<h1>Alphabet</h1>
-			<a href="#popupBasica" data-position-to="window" data-transition="fade" data-rel="popup" id="infoicon" data-icon="info" class="ui-btn-right" data-iconpos="notext">Info</a>
-			<a href="#home" id="home" data-icon="home" class="ui-btn-left" data-iconpos="notext">home</a>			
+			<a href="#popupBasica" data-position-to="window" data-transition="slide" data-rel="popup" id="infoicon" data-icon="info" class="ui-btn-right" data-iconpos="notext">Info</a>
+			<a href="#home" id="home" data-transition="slide" data-icon="home" class="ui-btn-left" data-iconpos="notext">home</a>			
 		</div>
 		<div data-role="content" data-theme="a" id="content">
 			<ul data-role="listview" data-count-theme="b" data-inset="true" id="alphabetList">
@@ -414,7 +411,7 @@
 	<div data-role="page" data-theme="a" id="alphabetHomeLeft">
 		<div data-role="header" data-position="fixed">
 			<h1>Alphabet</h1>
-			<a href="#home" id="home" data-icon="home" class="ui-btn-left" data-iconpos="notext">home</a>
+			<a href="#home" id="home" data-transition="slide" data-icon="home" class="ui-btn-left" data-iconpos="notext">home</a>
 			<a href="#" id="afav" data-mini="true" data-iconshadow="false" class="ui-btn ui-icon-star-off ui-btn-icon-notext ui-corner-all ui-btn-right">Favorite</a>		
 		</div>
 		<div data-role="content" data-theme="a" id="alphabetHomeLeftContent" style="height:95%;overflow:hidden">
@@ -428,8 +425,8 @@
 	<div data-role="page" data-theme="a" id="favHome">
 		<div data-role="header" data-position="fixed">
 			<h1>Favorites</h1>
-			<a href="#home" id="aFavHome" data-icon="home" class="ui-btn-left" data-iconpos="notext">home</a>
-			<a href="#popupBasicf" data-position-to="window" data-transition="fade" data-rel="popup" id="infoicon" data-icon="info" class="ui-btn-right" data-iconpos="notext">Info</a>
+			<a href="#home" id="aFavHome" data-transition="slide" data-icon="home" class="ui-btn-left" data-iconpos="notext">home</a>
+			<a href="#popupBasicf" data-position-to="window" data-transition="slide" data-rel="popup" id="infoicon" data-icon="info" class="ui-btn-right" data-iconpos="notext">Info</a>
 		</div>
 		<div data-role="content" data-theme="a" id="favHomeContent">
 				<ol data-role="listview" id="favList">
@@ -444,9 +441,9 @@
 	<!--Start: Group Page which shows word group-->
 	<div data-role="page" data-theme="a" id="groupHome">
 		<div data-role="header" data-position="fixed">
-			<a href="#home" id="grpHome" data-icon="home" class="ui-btn-left" data-iconpos="notext">home</a>
+			<a href="#home" id="grpHome" data-transition="slide" data-icon="home" class="ui-btn-left" data-iconpos="notext">home</a>
 			<div id="grpSelect" style="position:relative;left:42%"></div>
-			<a href="#popupBasicg" data-position-to="window" data-transition="fade" data-rel="popup" id="infoicong" data-icon="info" class="ui-btn-right" data-iconpos="notext">Info</a>
+			<a href="#popupBasicg" data-position-to="window" data-transition="slide" data-rel="popup" id="infoicong" data-icon="info" class="ui-btn-right" data-iconpos="notext">Info</a>
 		</div>
 		<div data-role="content" data-theme="a" id="groupHomeContent">
 				<ol data-role="listview" id="groupList">
