@@ -202,18 +202,18 @@
 				}
 			});			
 
-			$(document).on('click','.gFav',function(){
-				if($(this).hasClass("ui-icon-star-off")){
-					$(this).removeClass("ui-icon-star-off");
-					$(this).addClass("ui-icon-star-on");
-					setFavorite($(this).attr('aid'));
+			$(document).on('click','.liFav',function(){
+				var gFav = $(this).find('.gFav');
+				if($(gFav).hasClass("ui-icon-star-off")){
+					$(gFav).removeClass("ui-icon-star-off");
+					$(gFav).addClass("ui-icon-star-on");
+					setFavorite($(gFav).attr('aid'));
 				}else{
-					$(this).removeClass("ui-icon-star-on");
-					$(this).addClass("ui-icon-star-off");
-					removeFavorite($(this).attr('aid'));
+					$(gFav).removeClass("ui-icon-star-on");
+					$(gFav).addClass("ui-icon-star-off");
+					removeFavorite($(gFav).attr('aid'));
 				}
 			});
-
 
 		});
 
@@ -276,7 +276,7 @@
 				if(isFav){
 					var putStar = 'ui-icon-star-on" aid="'+g[i]+'"';
 				}
-				s += '<li><b>'+wl[g[i]].w+'</b><span data-mini="true" data-iconshadow="false" class="gFav ui-btn ui-btn-icon-notext ui-corner-all ui-btn-right '+putStar+'>Favorite</span><div class="meaning">'+wl[g[i]].m+'</div></li>'
+				s += '<li class="liFav"><b>'+wl[g[i]].w+'</b><span data-mini="true" data-iconshadow="false" class="gFav ui-btn ui-btn-icon-notext ui-corner-all ui-btn-right '+putStar+'>Favorite</span><div class="meaning">'+wl[g[i]].m+'</div></li>'
 			}
 			$('#'+id).append(s);
 			if($('#'+id).length){
